@@ -3,6 +3,34 @@
 #include "ofMain.h"
 #include "ofxDmx.h"
 #include "ofxGui.h"
+#include "ofxJSON.h"
+
+
+enum DMXCH{
+	chXSpin = 1,
+	chXFine,
+	chYSpin,
+	chYFine,
+	chXySpeed,
+	chDimmer,
+	chStrobe,
+	chR,
+	chG,
+	chB,
+	chW,
+	chZoom
+} DMXCH;
+
+class DMXInfo{
+public:
+	DMXInfo(){
+		for(int i=0; i<12; i++){
+			channel.push_back(0);
+		}
+	}
+
+	vector<uint8_t> channel;
+}
 
 class ofApp : public ofBaseApp {
 public:
@@ -27,11 +55,8 @@ public:
 	ofParameter<int> chan10;
 	ofParameter<int> chan11;
 	ofParameter<int> chan12;
-//	ofParameter<int> chan13;
-//    ofParameter<int> chan14;
-//    ofParameter<int> chan15;
-//	ofParameter<int> chan16;
-
 
     ofParameter<bool> autoCycle;
+
+	vector<DMXInfo> dmxValues;
 };
