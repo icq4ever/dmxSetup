@@ -35,6 +35,11 @@ void ofApp::setup() {
     panel.add(chan10);
     panel.add(chan11);
     panel.add(chan12);
+
+    DMXInfo tInfo;
+    for(int i=0; i<4; i++){
+        dmxValues.push_back(tInfo);
+    }
 }
 
 void ofApp::update() {
@@ -54,27 +59,69 @@ void ofApp::update() {
     //     chan11 = 127 + 127 * sin(-1 * ofGetElapsedTimef());
     //     chan12 = 127 + 127 * sin(-1.5 * ofGetElapsedTimef());
     //     chan13 = 127 + 127 * sin(2 * ofGetElapsedTimef());
-    //     chan14 = 127 + 127 * sin(-2 * ofGetElapsedTimef());
+	//     chan14 = 127 + 127 * sin(-2 * ofGetElapsedTimef());
     //     chan15 = 127 + 127 * sin(1.5 * ofGetElapsedTimef());
-    //     chan16 = 127 + 127 * sin(1 * ofGetElapsedTimef());
+    //     chanDMXCH16 = 127 + 127 * sin(1 * ofGetElapsedTimef());
     // }
 
+    for(int i=0; i<4; i++){
+        if(dmxID.get()-1 == i) dmxValues[i].channel[0]= chan1.get();
+        if(dmxID.get()-1 == i) dmxValues[i].channel[1] = chan2.get();
+        if(dmxID.get()-1 == i) dmxValues[i].channel[2] = chan3.get();
+        if(dmxID.get()-1 == i) dmxValues[i].channel[3] = chan4.get();
+        if(dmxID.get()-1 == i) dmxValues[i].channel[4] = chan5.get();
+        if(dmxID.get()-1 == i) dmxValues[i].channel[5] = chan6.get();
+        if(dmxID.get()-1 == i) dmxValues[i].channel[6] = chan7.get();
+        if(dmxID.get()-1 == i) dmxValues[i].channel[7] = chan8.get();
+        if(dmxID.get()-1 == i) dmxValues[i].channel[8] = chan9.get();
+        if(dmxID.get()-1 == i) dmxValues[i].channel[9] = chan10.get();
+        if(dmxID.get()-1 == i) dmxValues[i].channel[10] = chan11.get();
+        if(dmxID.get()-1 == i) dmxValues[i].channel[11] = chan12.get();
+    }
+
     // change CH number
-	dmx.setLevel(dmxID * 16 + 1, chan1);
-	dmx.setLevel(dmxID * 16 + 2, chan2);
-    dmx.setLevel(dmxID * 16 + 3, chan3);
-    dmx.setLevel(dmxID * 16 + 4, chan4);
-    dmx.setLevel(dmxID * 16 + 5, chan5);
-    dmx.setLevel(dmxID * 16 + 6, chan6);
-    dmx.setLevel(dmxID * 16 + 7, chan7);
-	dmx.setLevel(dmxID * 16 + 8, chan8);
-    dmx.setLevel(dmxID * 16 + 9, chan9);
-    dmx.setLevel(dmxID * 16 + 10, chan10);
-    dmx.setLevel(dmxID * 16 + 11, chan11);
-    dmx.setLevel(dmxID * 16 + 12, chan12);
+	dmx.setLevel(dmxID * 16 + 1, dmxValues[dmxID-1].channel[0]);
+	dmx.setLevel(dmxID * 16 + 2, dmxValues[dmxID-1].channel[1]);
+    dmx.setLevel(dmxID * 16 + 3, dmxValues[dmxID-1].channel[2]);
+    dmx.setLevel(dmxID * 16 + 4, dmxValues[dmxID-1].channel[3]);
+    dmx.setLevel(dmxID * 16 + 5, dmxValues[dmxID-1].channel[4]);
+    dmx.setLevel(dmxID * 16 + 6, dmxValues[dmxID-1].channel[5]);
+    dmx.setLevel(dmxID * 16 + 7, dmxValues[dmxID-1].channel[6]);
+	dmx.setLevel(dmxID * 16 + 8, dmxValues[dmxID-1].channel[7]);
+    dmx.setLevel(dmxID * 16 + 9, dmxValues[dmxID-1].channel[8]);
+    dmx.setLevel(dmxID * 16 + 10, dmxValues[dmxID-1].channel[9]);
+    dmx.setLevel(dmxID * 16 + 11, dmxValues[dmxID-1].channel[10]);
+    dmx.setLevel(dmxID * 16 + 12, dmxValues[dmxID-1].channel[11]);
     dmx.update();
 }
 
 void ofApp::draw() {
     panel.draw();
+}
+
+void ofApp::saveSettings(){
+    ofxJSONElement json;
+
+    for(int i=0; i<4; i++){
+        json[ofToString(i+1)][0] =  dmxValues[i].channel[0];
+        json[ofToString(i+1)][1] =  dmxValues[i].channel[1];
+        json[ofToString(i+1)][2] =  dmxValues[i].channel[2];
+        json[ofToString(i+1)][3] =  dmxValues[i].channel[3];
+        json[ofToString(i+1)][4] =  dmxValues[i].channel[4];
+        json[ofToString(i+1)][5] =  dmxValues[i].channel[5];
+        json[ofToString(i+1)][6] =  dmxValues[i].channel[6];
+        json[ofToString(i+1)][7] =  dmxValues[i].channel[7];
+        json[ofToString(i+1)][8] =  dmxValues[i].channel[8];
+        json[ofToString(i+1)][9] =  dmxValues[i].channel[9];
+        json[ofToString(i+1)][10] = dmxValues[i].channel[10];
+        json[ofToString(i+1)][11] = dmxValues[i].channel[11];
+    }
+
+    json.save("setting.json");
+}
+
+void ofApp::keyReleased(int key){
+    if(key == 's' || key == 'S'){
+        saveSettings();
+    }
 }

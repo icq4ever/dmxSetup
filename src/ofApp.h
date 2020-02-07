@@ -19,7 +19,7 @@ enum DMXCH{
 	chB,
 	chW,
 	chZoom
-} DMXCH;
+};
 
 class DMXInfo{
 public:
@@ -30,13 +30,14 @@ public:
 	}
 
 	vector<uint8_t> channel;
-}
+};
 
 class ofApp : public ofBaseApp {
 public:
 	void setup();
 	void update();
 	void draw();
+	void keyReleased(int key);
 	
 	ofxDmx dmx;
 	int level;
@@ -59,4 +60,6 @@ public:
     ofParameter<bool> autoCycle;
 
 	vector<DMXInfo> dmxValues;
+
+	void saveSettings();
 };
