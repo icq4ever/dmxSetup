@@ -62,4 +62,6 @@ public:
 	vector<DMXInfo> dmxValues;
 
 	void saveSettings();
+	void loadSettings();
+	int lastDmxID = dmxID.get();
 };
